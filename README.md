@@ -1,70 +1,94 @@
-# Getting Started with Create React App
+```
+import React from 'react';
+import './App.css';
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+import SCRViewer from './lib/SCRViewer';
 
-## Available Scripts
+import saccade from './datasample/saccade.json';
+import pursuit from './datasample/pursuit.json';
+import antisaccade from './datasample/antisaccade.json';
+import saccade_sky from './datasample/saccade_sky.json';
+function App() {
+  const [dataNumber,set_dataNumber] = React.useState(0);
 
-In the project directory, you can run:
+  
+  const s3data = React.useMemo(()=>{
 
-### `npm start`
+    let newraw;
+    if(dataNumber===0){
+      // console.log(teleport);
+      newraw =saccade_sky;
+    }
+    else if(dataNumber===1){
+      // console.log(teleport);
+      newraw =saccade;
+    }
+    else if(dataNumber===2){
+      newraw =pursuit;
+    }
+    else if(dataNumber===3){
+      newraw =antisaccade;
+    }
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    if(newraw){
+      // console.log("newraw",newraw);
+      let gazeData = newraw.gazeData;
 
-### `npm test`
+      let gazeProperty =  newraw.gazeProperty;
+      let newgazeData=[];
+      for(let i = 0 ; i <gazeData.length; i++){
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+        let data = gazeData[i];
+        let newdata=[];
+        // console.log(data);
+        for(let j = 0 ; j <data.length; j++){
+          let oneEye = data[j];
+          // console.log("oneEye",oneEye);
+          let newEye ={};
+          for(let k = 0; k<gazeProperty.length; k++){
+              newEye[gazeProperty[k]] = oneEye[k];
+          }
+          // console.log(newEye);
+          newdata.push(newEye);
+        }
+        newgazeData.push(newdata);
+      }
+      
+      newraw.taskArr = newgazeData;
+      console.log("데이터",newraw);
+      return newraw;
+      // return newraw;
+    }
+    else{
+      return null;
+    }
 
-### `npm run build`
+  },[dataNumber]);
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  return (
+    <div className="App">
+        데이터셈플 
+        <select value={dataNumber} onChange={(e)=>{
+          // console.log(e.target.value)
+          set_dataNumber(e.target.value*1)
+        }}>
+           <option value={0}>saccadesky</option>
+          <option value={1}>saccade</option>
+          <option value={2}>pursuit</option>
+          <option value={3}>antisaccade</option>
+          </select>
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+       <div style={{width:'100%',height:'90%',outline:'1px solid red'}}>
+          <SCRViewer s3data={s3data} />
+       </div>
+    </div>
+  );
+}
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+export default App;
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```

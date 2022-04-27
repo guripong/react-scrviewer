@@ -56,5 +56,16 @@
     "node-sass": "^4.14.1"
   },
   "author": "guripong",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guripong/react-srcviewer.git"
+  },
+  "peerDependencies": {
+    "react": ">= 17",
+    "react-dom": ">= 17"
+  },
+  "engines": {
+    "node": ">= 14"
+  }
 }
