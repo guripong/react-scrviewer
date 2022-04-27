@@ -1,6 +1,6 @@
 {
   "name": "react-scrviewer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "babel": {
     "presets": [
@@ -11,15 +11,14 @@
   "description": "",
   "module": "dist/SCRViewer.js",
   "main": "dist/SCRViewer.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "publish:npm": "rm -rf dist && mkdir dist && babel src/lib -d dist --copy-files",
-    "deploy_npm" : "npm version patch && npm publish"
+    "deploy_npm": "npm version patch && npm publish"
   },
   "eslintConfig": {
     "extends": [
